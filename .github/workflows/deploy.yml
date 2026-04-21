@@ -1,0 +1,38 @@
+name: Deploy static site
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.OCI_SSH_KEY }}" > ~/.ssh/oci_key
+          chmod 600 ~/.ssh/oci_key
+          ssh-keyscan -H ${{ secrets.OCI_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy to OCI VM
+        run: |
+          rsync -avz --delete \
+            --exclude ".git" \
+            --exclude ".github" \
+            --exclude "README.md" \
+            -e "ssh -i ~/.ssh/oci_key" \
+            ./ ${{ secrets.OCI_USER }}@${{ secrets.OCI_HOST }}:/tmp/flower-site/
+
+      - name: Publish site
+        run: |
+          ssh -i ~/.ssh/oci_key ${{ secrets.OCI_USER }}@${{ secrets.OCI_HOST }} << 'EOF'
+            sudo rsync -av --delete /tmp/flower-site/ /var/www/html/
+            sudo nginx -t
+            sudo systemctl reload nginx
+          EOF
