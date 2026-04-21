@@ -26,6 +26,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function bindEvents() {
   $("#logoBtn")?.addEventListener("click", resetAll);
+  document.querySelectorAll('a[href^="#"]').forEach((link) => {
+    link.addEventListener("click", (event) => {
+      const target = link.getAttribute("href");
+      if (!target || target === "#") return;
+      event.preventDefault();
+      scrollToSection(target);
+      history.replaceState(null, "", target);
+    });
+  });
   $("#searchBtn")?.addEventListener("click", () => {
     state.query = $("#searchInput").value.trim();
     hideSuggestions();
@@ -62,7 +71,7 @@ function bindEvents() {
     scrollToResults();
   });
   $("#mobileFilterBtn")?.addEventListener("click", () => {
-    $("#filters")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    scrollToSection("#filters");
   });
   $("#detailCloseBtn")?.addEventListener("click", closeDetail);
   $("#detailOverlay")?.addEventListener("click", (event) => {
@@ -578,7 +587,25 @@ function resetAll() {
 }
 
 function scrollToResults() {
-  $("#recommendations")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  scrollToSection("#filters");
+}
+
+function scrollToSection(selector) {
+  const targetSelector = selector === "#recommendations" ? "#filters" : selector;
+  const target = $(targetSelector);
+  if (!target) return;
+
+  const header = document.querySelector("header");
+  const themeBar = $("#themes");
+  const headerHeight = header ? header.getBoundingClientRect().height : 0;
+  const themeHeight = themeBar && targetSelector !== "#themes" ? themeBar.getBoundingClientRect().height : 0;
+  const breathingRoom = targetSelector === "#filters" ? 8 : 10;
+  const top = target.getBoundingClientRect().top + window.scrollY - headerHeight - themeHeight - breathingRoom;
+
+  window.scrollTo({
+    top: Math.max(0, top),
+    behavior: "smooth"
+  });
 }
 
 function normalize(value) {

@@ -4,6 +4,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 142px;
 }
 
 body {
@@ -26,6 +27,13 @@ button {
 
 img {
   display: block;
+}
+
+#themes,
+#filters,
+#recommendations,
+#popular {
+  scroll-margin-top: 142px;
 }
 
 ::-webkit-scrollbar {
