@@ -188,7 +188,7 @@ const FLOWERS = [
     seasonScore: 86,
     bloom: "연중",
     palette: "rose-blush",
-    image: "https://images.unsplash.com/photo-1468327768560-75b778cbb551?auto=format&fit=crop&w=640&q=80",
+    image: "https://commons.wikimedia.org/wiki/Special:FilePath/Pink_Bouquet_(Unsplash).jpg?width=900",
     tags: ["감사", "연인", "부모님"],
     reason: "사랑의 의미가 있지만 붉은 장미보다 온도가 낮아 감사와 다정함을 함께 표현하기 좋습니다.",
     combinations: ["안개꽃", "피치 카네이션", "라그라스"]
