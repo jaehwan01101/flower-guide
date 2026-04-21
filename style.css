@@ -1,0 +1,9 @@
+/* style.css — 모든 스타일은 index.html <style> 태그와 Tailwind로 처리됩니다.
+   이 파일은 하위 호환성을 위해 유지됩니다. */
+
+/* sort-btn active state (Tailwind JIT가 동적 클래스를 못 잡을 때 대비) */
+.sort-btn.active {
+  background-color: #C8625A;
+  color: #ffffff;
+  border-color: #C8625A;
+}
